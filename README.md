@@ -21,7 +21,7 @@ To use **MailRecon**, follow these steps:
 
 4. **Enter Details**: Input the first name, middle name (optional), last name, birth year (optional), and target domain if known (optional).
    
-![image](https://github.com/user-attachments/assets/f9bfcf21-cbfc-48de-b579-fd83ab52fc21)
+![image](https://github.com/user-attachments/assets/f28dadd3-2b2d-4a2a-ade2-b5be48dab127)
 
 6. **Configure Settings**: Adjust settings using the settings menu to include/exclude numbered variants and deselect default email domains.
 
