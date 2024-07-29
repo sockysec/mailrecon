@@ -210,6 +210,7 @@
                 "{first}-{middle}-{last}",
                 "{first}.{middle}.{last}",
                 "{first}_{middle}_{last}",
+		"{first}{last}",
                 "{first}-{last}",
                 "{first}.{last}",
                 "{first}_{last}",
@@ -405,10 +406,10 @@
         <input type="text" id="customDomain" placeholder="example.com">
 
         <label for="usernameLength">Username Length (Optional):</label>
-        <input type="text" id="usernameLength" placeholder="">
+        <input type="text" id="usernameLength" placeholder="8">
 
-        <label for="partialUsername">Partial Username (Optional):</label>
-        <input type="text" id="partialUsername" placeholder="">
+        <label for="partialUsername">Partial Username (Optional) (Input * for unknown characters):</label>
+        <input type="text" id="partialUsername" placeholder="j******0">
 
         <button onclick="generateEmails()">Generate Emails</button>
 
