@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Address Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            font-family: monospace !important;
+            background-color: #111;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #222;
+            border-radius: 8px;
+            padding: 40px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #333;
+            color: #fff;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #666;
+            outline: none;
+            background-color: #444;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #31363c;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover {
+            background-color: #272b2f;
+        }
+
+        #results {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #ccc;
+            border-top: 1px solid #444;
+            padding-top: 20px;
+        }
+
+        .icon {
+            margin-right: 10px;
+        }
+
+        .domain-header {
+            font-size: 18px;
+            color: #fff;
+            margin-top: 20px;
+            text-transform: capitalize;
+        }
+
+        .email {
+            padding: 5px 0;
+        }
+
+        .settings-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #31363c;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            color: #fff;
+        }
+
+        .settings-button:hover {
+            background-color: #272b2f;
+        }
+
+        .settings-menu {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 80px;
+            background-color: #333;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .settings-menu h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #fff;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+
+        .settings-menu label {
+            font-weight: normal;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .settings-menu input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .settings-menu input[type="text"] {
+            width: calc(100% - 24px);
+            margin-bottom: 10px;
+        }
+
+        .settings-menu button {
+            background-color: #444;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .settings-menu button:hover {
+            background-color: #555;
+        }
+
+        .domain-list label {
+            display: block;
+            margin: 5px 0;
+        }
+    </style>
+    <script>
+        let showNumberedVariants = true;
+        let customDomains = ["gmail.com", "yahoo.com", "hotmail.com", "aol.com", "icloud.com", "yandex.com", "protonmail.com", "outlook.com"];
+
+        function generateEmails() {
+            const firstName = document.getElementById('firstName').value.trim().toLowerCase();
+            const lastName = document.getElementById('lastName').value.trim().toLowerCase();
+            const middleName = document.getElementById('middleName').value.trim().toLowerCase();
+            const birthYear = document.getElementById('birthYear').value.trim();
+            const customDomain = document.getElementById('customDomain').value.trim().toLowerCase();
+            const usernameLength = document.getElementById('usernameLength').value.trim();
+            const partialUsername = document.getElementById('partialUsername').value.trim().toLowerCase();
+            
+            if (!firstName || !lastName) {
+                alert('First Name and Last Name are required.');
+                return;
+            }
+
+            const f = firstName.charAt(0);
+            const l = lastName.charAt(0);
+            const m = middleName.charAt(0);
+            const ar = birthYear ? birthYear.slice(-2) : '';
+
+            const basicVariants = [
+                "{first}{middle}{last}",
+                "{first}{m}{last}",
+                "{f}{m}{last}",
+                "{first}-{middle}-{last}",
+                "{first}.{middle}.{last}",
+                "{first}_{middle}_{last}",
+                "{first}-{last}",
+                "{first}.{last}",
+                "{first}_{last}",
+                "{first}{l}",
+                "{first}.{l}",
+                "{first}_{l}",
+                "{first}-{l}",
+                "{first}",
+                "{f}{last}",
+                "{last}{f}"
+            ];
+
+            const birthYearVariants = [
+                "{first}{middle}{last}{birthyear}",
+                "{first}{m}{last}{birthyear}",
+                "{f}{m}{last}{birthyear}",
+                "{first}-{middle}-{last}{birthyear}",
+                "{first}.{middle}.{last}{birthyear}",
+                "{first}_{middle}_{last}{birthyear}",
+                "{first}{last}{birthyear}",
+                "{first}{l}{birthyear}",
+                "{f}{last}{birthyear}",
+                "{last}{f}{birthyear}",
+                "{f}{m}{l}{birthyear}",
+            ];
+
+            const arVariants = [
+                "{first}{middle}{last}{ar}",
+                "{first}{m}{last}{ar}",
+                "{f}{m}{last}{ar}",
+                "{first}-{middle}-{last}{ar}",
+                "{first}.{middle}.{last}{ar}",
+                "{first}_{middle}_{last}{ar}",
+                "{first}{last}{ar}",
+                "{first}{l}{ar}",
+                "{f}{last}{ar}",
+                "{last}{f}{ar}"
+            ];
+
+            const numberedVariants = [
+                "{first}{last}1",
+                "{first}{m}{last}1",
+                "{f}{m}{last}1",
+                "{first}-{last}1",
+                "{first}.{last}1",
+                "{first}_{last}1",
+                "{first}{l}1",
+                "{f}{last}1",
+                "{last}{f}1"
+            ];
+
+            const numberedVariants2 = [
+                "{first}{last}2",
+                "{first}{m}{last}2",
+                "{f}{m}{last}2",
+                "{first}-{last}2",
+                "{first}.{last}2",
+                "{first}_{last}2",
+                "{first}{l}2",
+                "{f}{last}2",
+                "{last}{f}2"
+            ];
+
+            const numberedVariants3 = [
+                "{first}{last}3",
+                "{first}{m}{last}3",
+                "{f}{m}{last}3",
+                "{first}-{last}3",
+                "{first}.{last}3",
+                "{first}_{last}3",
+                "{first}{l}3",
+                "{f}{last}3",
+                "{last}{f}3"
+            ];
+
+            let variants = basicVariants;
+            if (birthYear) {
+                variants = variants.concat(birthYearVariants);
+            }
+            if (ar) {
+                variants = variants.concat(arVariants);
+            }
+            if (showNumberedVariants) {
+                variants = variants.concat(numberedVariants);
+                variants = variants.concat(numberedVariants2);
+                variants = variants.concat(numberedVariants3);
+            }
+
+            let results = {};
+            const domainsToUse = customDomain ? [customDomain] : customDomains;
+
+            domainsToUse.forEach(domain => {
+                results[domain] = [];
+                variants.forEach(variant => {
+                    let email = variant
+                        .replace("{first}", firstName)
+                        .replace("{middle}", middleName)
+                        .replace("{last}", lastName)
+                        .replace("{birthyear}", birthYear)
+                        .replace("{f}", f)
+                        .replace("{m}", m)
+                        .replace("{l}", l)
+                        .replace("{ar}", ar)
+                        .replace(/([.\-_]){2,}/g, '$1') // Remove duplicated punctuation
+                        + "@" + domain;
+                    
+                    let username = email.split('@')[0];
+                    if (
+                        (!usernameLength || username.length === parseInt(usernameLength)) &&
+                        (!partialUsername || matchesPartial(username, partialUsername))
+                    ) {
+                        results[domain].push(email);
+                    }
+                });
+            });
+
+            let output = '';
+            for (const domain in results) {
+                if (results[domain].length > 0) {
+                    output += `<div class="domain-header">${domain}</div>`;
+                    results[domain].forEach(email => {
+                        output += `<div class="email">${email}</div>`;
+                    });
+                }
+            }
+
+            document.getElementById('results').innerHTML = output;
+            window.scrollTo(0, 0);  // Scroll to the top of the page
+        }
+
+        function matchesPartial(username, partial) {
+            const regex = new RegExp('^' + partial.replace(/\*/g, '.*') + '$');
+            return regex.test(username);
+        }
+
+        function toggleSettingsMenu() {
+            const menu = document.getElementById('settingsMenu');
+            menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
+        }
+
+        function updateSettings() {
+            showNumberedVariants = document.getElementById('toggleNumberedVariants').checked;
+            customDomains = Array.from(document.querySelectorAll('#domainList input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+            toggleSettingsMenu();
+        }
+
+        function populateDomainList() {
+            const domainList = document.getElementById('domainList');
+            const defaultDomains = ["gmail.com", "yahoo.com", "hotmail.com", "aol.com", "icloud.com", "yandex.com", "protonmail.com", "outlook.com"];
+            
+            domainList.innerHTML = `<h2>Email Domain Settings</h2>` + defaultDomains.map(domain => `
+                <label>
+                    <input type="checkbox" value="${domain}" ${customDomains.includes(domain) ? 'checked' : ''}>
+                    ${domain}
+                </label>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', populateDomainList);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <button class="settings-button" onclick="toggleSettingsMenu()">
+            <i class="fas fa-cog" aria-hidden="true"></i>
+        </button>
+
+        <div id="settingsMenu" class="settings-menu">
+            <label>
+                <input type="checkbox" id="toggleNumberedVariants" checked>
+                Include Numbered Variants
+            </label>
+            <div id="domainList" class="domain-list">
+                <!-- Domain list will be populated here -->
+            </div>
+            <button onclick="updateSettings()">Save Settings</button>
+        </div>
+
+        <h1>Email Address Generator</h1>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" placeholder="John">
+        
+        <label for="middleName">Middle Name (Optional):</label>
+        <input type="text" id="middleName" placeholder="Doe">
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" placeholder="Smith">
+
+        <label for="birthYear">Birth Year (Optional):</label>
+        <input type="text" id="birthYear" placeholder="1990">
+
+        <label for="customDomain">Custom Domain (Optional):</label>
+        <input type="text" id="customDomain" placeholder="example.com">
+
+        <label for="usernameLength">Username Length (Optional):</label>
+        <input type="text" id="usernameLength" placeholder="">
+
+        <label for="partialUsername">Partial Username (Optional):</label>
+        <input type="text" id="partialUsername" placeholder="">
+
+        <button onclick="generateEmails()">Generate Emails</button>
+
+        <div id="results"></div>
+    </div>
+</body>
+</html>
