@@ -12,17 +12,23 @@ To use **MailRecon**, follow these steps:
     git clone https://github.com/yourusername/mailrecon.git
     ```
 
-2. **Open the Tool**: Open `mailrecon.html` in a web browser (bookmark as desired).
+    or
 
-3. **Enter Details**: Input the first name, middle name (optional), last name, birth year (optional), and target domain if known (optional).
+![image](https://github.com/user-attachments/assets/770c5a36-c8b3-4297-8114-ced5758517dc)
 
-4. **Configure Settings**: Adjust settings using the settings menu to include/exclude numbered variants and deselect default email domains.
+   
+3. **Open the Tool**: Open `mailrecon.html` in a web browser (bookmark as desired).
 
-5. **Generate Emails**: Click the "Generate Emails" button to view potential email addresses based on your input and settings.
-
-6. Pivot as desired into OSINT.Industries or other tools to validate and verify the email belongs to your target.
-
-
+4. **Enter Details**: Input the first name, middle name (optional), last name, birth year (optional), and target domain if known (optional).
+   
 ![image](https://github.com/user-attachments/assets/f9bfcf21-cbfc-48de-b579-fd83ab52fc21)
 
+6. **Configure Settings**: Adjust settings using the settings menu to include/exclude numbered variants and deselect default email domains.
+
 ![image](https://github.com/user-attachments/assets/6474d8e7-3a7f-48cc-bcff-d5748bc477b0)
+
+7. **Generate Emails**: Click the "Generate Emails" button to view potential email addresses based on your input and settings.
+
+8. Pivot as desired into OSINT.Industries or other tools to validate and verify the email belongs to your target.
+
+
